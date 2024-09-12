@@ -85,11 +85,15 @@ jobs:
       VAULT_TOKEN: "root"
       VAULT_ADDR: "http://127.0.0.1:8200"
     steps:
-      - name: Install rustup
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --default-toolchain 1.70.0
-
       - name: Check out code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      # Rust version and default components are specified in rust-toolchain.toml
+      - name: Install Rust version and required components
+        run: rustup component add cargo rustc
+
+      - name: Show Rust version
+        run: cargo --version
 
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
